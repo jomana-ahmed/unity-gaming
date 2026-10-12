@@ -12,12 +12,14 @@ public class PlayerController : MonoBehaviour{
     public float groundCheckRadius; 
     public LayerMask whatIsGround; 
     private bool grounded; 
+    private Animator anim;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -36,6 +38,9 @@ public class PlayerController : MonoBehaviour{
             }
         }
 //player character moves horizontally to the left along the x-axis without disrupting jump
+        anim.SetFloat("Speed",Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x));
+        anim.SetFloat("Height", GetComponent<Rigidbody2D>().velocity.y);
+        anim.SetBool("Grounded", grounded);
 
         if (Input.GetKey(R)){
             GetComponent<Rigidbody2D>().velocity =new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
