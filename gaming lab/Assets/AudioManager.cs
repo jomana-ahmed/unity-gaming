@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour
     public void PlayMusicSFX(AudioClip clip)
     {
         sfxSource.clip = clip;
-        sfxSource.Play();
+        sfxSource.PlayOneShot(clip);
     }
 
     // Play a specific soundtrack

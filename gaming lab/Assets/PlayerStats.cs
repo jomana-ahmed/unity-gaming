@@ -1,8 +1,12 @@
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 public class PlayerStats : MonoBehaviour
 {
-     public static int health = 3;
+    public TextMeshProUGUI scoreUI;
+    public Image healthBar;
+    public static int health = 3;
     public static int lives = 3;
     public static int score = 0;
     public static bool hasHeart = false;
@@ -33,6 +37,7 @@ public class PlayerStats : MonoBehaviour
                 sr.enabled = true;
             }
         }
+        scoreUI.text = " " + score;
     }
 
     void SpriteFlicker()
@@ -50,26 +55,30 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isImmune == false)
-        {
-            health = health - damage;
-            if (health < 0)
-                health = 0;
-            if (lives > 0 && health == 0)
-            {
-                FindObjectOfType<Levelmanager>().RespawnPlayer();
-                health = 3;
-                lives--;
-            }
-            else if (lives == 0 && health == 0)
-            {
-                Debug.Log("Gameover");
-                Destroy(this.gameObject);
-            }
+      if (isImmune == false)
+    {
+        health = health - damage;
 
-            Debug.Log("Player Health:" + health.ToString());
-            Debug.Log("Player Lives:" + lives.ToString());
+        healthBar.fillAmount = PlayerStats.health / 3f;
+
+        if (health < 0)
+            health = 0;
+
+        if (lives > 0 && health == 0)
+        {
+            FindObjectOfType<Levelmanager>().RespawnPlayer();
+
+            health = 3;
+
+            healthBar.fillAmount = PlayerStats.health / 3f;
+
+            lives--;
         }
+        else if (lives == 0 && health == 0)
+        {
+            SceneManager.LoadScene(3);
+        }
+    }
 
         isImmune = true;
         immunityTime = 0f;
